@@ -11,7 +11,6 @@ for i=1:m
     user_means(i) = mean(M(i, M(i,:) ~= nil));
     M(i,M(i,:) ~= nil) = M(i,M(i,:) ~= nil) - user_means(i);
 end
-user_means
 
 nil_values = (M == nil);
 M(nil_values) = 0;
