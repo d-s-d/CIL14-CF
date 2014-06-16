@@ -38,7 +38,7 @@ iter = iter + 1;
 end
 
 for i=1:m
-    L(i,M(i,:) ~= 0) = L(i,M(i,:) ~= 0) + user_means(i);
+    L(i,M(i,:) == 0) = L(i,M(i,:) == 0) + user_means(i);
 end
 
 end
