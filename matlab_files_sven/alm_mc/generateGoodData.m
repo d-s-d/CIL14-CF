@@ -1,4 +1,4 @@
-function [ data, modData, g ] = generateData( user, hotel, groups, attackers ,sparse )
+function [ data, modData, g, attacker_rows ] = generateData( user, hotel, groups, attackers ,sparse )
 %GENERATEDATA Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -63,8 +63,11 @@ if (attackers < user && attackers > 0)
     end
     %Add attacks to data
     modData((end+1):(end+attackers),:) = fake_data;
+        
     %Mix attackers into regular users
-    modData = modData(randperm(size(modData,1)),:);
+    permutation = randperm(size(modData,1));
+    attacker_rows = find(permutation > user);
+    modData = modData(permutation,:);
 end
 
 %Remove some vlaues according to sparse
