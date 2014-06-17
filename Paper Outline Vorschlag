@@ -1,0 +1,82 @@
+PAPER AUFBAU
+------------
+
+1. Introduction
+---------------
+
+Erklaere, wie unser Hauptalg. mit ALM funktioniert. A + E = D, wobei E nur eine Hilfsvariable ist.
+
+Im Gegensatz dazu ist RPCA (mit ADMM statt ALM) L + S = M, wobei S im Gegensatz zu E sparse sein muss,
+und nicht missing values ausgleicht, sondern noise herausfiltern soll.
+
+So gesehen ist RPCA maechtiger, da es zusaetzlich mit corruptions umgehen kann.
+
+In unseren Experimenten haben wir aber festgestellt, dass RPCA (mit ADMM) eher schlechter funktioniert als unser
+ALM-Algorithmus, und daraus geschlossen, dass wir keine corruptions erwarten, welche RPCA herausfiltern koennte.
+
+Wir stellen in Frage, wie RPCA ueberhaupt missing values beruecksichtigen kann ohne solche Hilfsvariable, und
+kritisieren ev. den doch sehr kurzen Abschnitt im Paper, der sagt, dass die Condition nur auf den observed values
+gelten muss. Wir zeigen auch dass wir uns wegen dieser kurzen Beschreibung nicht 100% sicher in unserer eigenen
+Implementierung sind (sollte ok sein, da es nur eine Baseline und nicht unser Hauptcode ist).
+
+2. Models and Methods
+---------------------
+
+Wir beziehen uns auf das Paper, aus dem wir ALM MC haben, reformulieren ihr Ziel der nuclear norm minimization
+und erklaeren in unseren eigenen Worten die Rolle der Hilfsmatrix E (das war dort nicht 100% klar beim ersten
+durchlesen).
+
+Wir streichen heraus, dass wir uns die update steps mit mu sparen, und begruenden das damit, dass wir so keine
+besseren Resultate erzielt haben (ev. Code mit update steps auch noch beilegen). Wir stellen klar, dass diese
+update steps eine Optimierung sind und nicht DIREKT mit dem Problem der matrix completion zusammenhaengen.
+(Da der einzige Matrix Completion Algorithmus im Paper diese update steps macht, koennte man das denken)
+
+Wir koennten unsere Versuche mit den verbesserten Algorithmen erwaehnen und dass svd econ schon gute Laufzeit
+bringt (dazu muesste man aber ev. auch direkte Vergleiche anstellen... ev. lassen wir das einfach raus).
+
+In diesen Abschnitt gehoert wohl auch das Hotel-Testmodell inkl. Idee dahinter und detaillierter Beschreibung. 
+
+3. Results
+----------
+
+Wir machen Tabellen und ev. Graphen von Vergleich ALM - RPCA - SVD (baseline).
+
+Wir machen ev. noch Tabellen/Graphen mit unterschiedlichen Toleranzparametern
+
+
+4. Discussion
+-------------
+
+Wir zeigen eine Verbesserung gegenueber der SVD baseline, auf Kosten von Laufzeit.
+
+Wir sehen dass man einiges an Laufzeit herausholen kann wenn man ganz wenig mehr error erlaubt
+(parameter tuning).
+
+Wir vergleichen auch mit RPCA als baseline, und zeigen dass RPCA nicht besser ist, daher wird
+es wohl keine corruptions haben (komisch dass RPCA auch bei einzelnen attackers beim Hotel schlecht
+wird, aber ev. ist da auch was beim Hotel Modell speziell)
+
+Hier koennte man auch auf die Idee mit zwei Matrizen, also M = L + E + S, eingehen.
+
+
+5. Summary
+----------
+
+Wir haben hauptsaechlich einen Algorithmus gefunden und implementiert, der auf unseren CIL-Daten
+gute Resultate liefert. Wir haben ihn ein wenig vereinfacht und auf das Wesentliche reduziert.
+
+Ausserdem haben wir zum besseren Verstaendnis beigetragen, was RPCA und ADMM vs. unseren Algorithmus
+und ALM betrifft, da diese aehnlich wirken, aber doch recht andere Sachen machen. (Ich finde, unklare
+Sachen erklaeren und Zusammenfassen kann auch Teil eines Papers sein...)
+
+Wir haben zuletzt eine Richtung aufgezeigt, in die hier weiter geforscht werden koennte (M = L + E + S).
+
+
+
+
+
+
+
+
+
+
