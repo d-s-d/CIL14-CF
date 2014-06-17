@@ -1,29 +1,37 @@
 % Test script for generated hotel data
-user = 500;
-hotel = 40;
+user = 909;
+hotel = 42;
 groups = 5;
-attackers = 5;
+%attackers = 5;
 sparse = 0.4;
 nil = -1;
 
-m = user + attackers;
+for attackers=0:50:250
+    m = user + attackers;
 
-[ data, modData, g, attacker_rows ] = generateDifferentData( user, hotel, groups, attackers ,sparse );
+    [ data, modData, g, attacker_rows ] = generateGoodData( user, hotel, groups, attackers ,sparse );
 
 
-predData_alm = alm_mc(modData, nil);
-predData_alm = predData_alm(~ismember(1:m, attacker_rows), :);
+    fprintf('ALM running on Matrix of size %d x %d\n',size(modData,1),size(modData,2));
+    predData_alm = alm_mc(modData, nil);
+    %predData_alm = predData_alm(~ismember(1:m, attacker_rows), :);
+    predData_alm_clean = predData_alm(1:user,:);
 
-mse_alm = sqrt(mean((data(:) - predData_alm(:)).^2))
+    mse_alm = sqrt(mean((data(:) - predData_alm_clean(:)).^2));
+    fprintf(1,'ALM-Error with %d attackers: %d\n', attackers, mse_alm);
 
-[predData_rpca, noise_rpca] = rpca_missing(modData, nil);
+    fprintf('RPCA running on Matrix of size %d x %d\n',size(modData,1),size(modData,2));
+    [predData_rpca, noise_rpca] = rpca_missing(modData, nil);
 
-% Uncomment line to display attacker rows:
-% attacker_rows
+    % Uncomment line to display attacker rows:
+    % attacker_rows
 
-% Uncomment line to display noise:
-% noise_rpca
+    % Uncomment line to display noise:
+    % noise_rpca
 
-predData_rpca = predData_rpca(~ismember(1:m, attacker_rows), :);
+    %predData_rpca = predData_rpca(~ismember(1:m, attacker_rows), :);
+    predData_rpca_clean = predData_rpca(1:user,:);
 
-mse_rpca = sqrt(mean((data(:) - predData_rpca(:)).^2))
+    mse_rpca = sqrt(mean((data(:) - predData_rpca_clean(:)).^2));
+    fprintf(1,'RPCA-Error with %d attackers: %d\n', attackers, mse_rpca);
+end

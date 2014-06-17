@@ -1,9 +1,9 @@
-function [ data, modData, g, attacker_rows ] = generateData( user, hotel, groups, attackers ,sparse )
+function [ data, modData, g, attacker_rows ] = generateGoodData( user, hotel, groups, attackers ,sparse )
 %GENERATEDATA Summary of this function goes here
 %   Detailed explanation goes here
 
 data = zeros(user,hotel);
-
+attacker_rows = zeros(0);
 %Objective Hotel Quality
 hotel_quality = rand(hotel,1);
 
@@ -65,9 +65,9 @@ if (attackers < user && attackers > 0)
     modData((end+1):(end+attackers),:) = fake_data;
         
     %Mix attackers into regular users
-    permutation = randperm(size(modData,1));
-    attacker_rows = find(permutation > user);
-    modData = modData(permutation,:);
+    %permutation = randperm(size(modData,1));
+    %attacker_rows = find(permutation > user);
+    %modData = modData(permutation,:);
 end
 
 %Remove some vlaues according to sparse
