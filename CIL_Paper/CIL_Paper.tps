@@ -17,8 +17,8 @@ Class=LaTeXView
 Document=CIL_Paper.tex
 
 [Frame0_View0,0]
-TopLine=234
-Cursor=14536
+TopLine=21
+Cursor=1623
 
 [SessionInfo]
 FrameCount=1
