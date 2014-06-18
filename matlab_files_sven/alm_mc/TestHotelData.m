@@ -6,10 +6,10 @@ groups = 5;
 sparse = 0.4;
 nil = -1;
 
-for attackers=0:50:250
+for attackers=0:5
     m = user + attackers;
 
-    [ data, modData, g, attacker_rows ] = generateGoodData( user, hotel, groups, attackers ,sparse );
+    [ data, modData, g, attacker_rows ] = generateMixedData( user, hotel, groups, attackers ,sparse );
 
 
     fprintf('ALM running on Matrix of size %d x %d\n',size(modData,1),size(modData,2));
