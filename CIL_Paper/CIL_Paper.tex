@@ -5,6 +5,8 @@
 \usepackage{url}
 \usepackage{graphicx}	% For figure environment
 \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm2e}
 
 
 \begin{document}
@@ -70,12 +72,12 @@ provided by MATLAB rather than an external library. \\
 We compare these results to those of another algorithm based on \cite{rpcapaper},
 Section 1.6, that explains how Robust PCA can be used for matrix completion. \\
 
-\subsection{Model}
+\subsection{Objective}
 
 We formulate our problem as in Section 3.2 of \cite{almpaper}. Given an original matrix $D$ and
 a number of observed entries $\Omega$, we wish to reconstruct the complete matrix $D$. Under certain
-conditions on the rank of $D$ and the number of samples [TODO more detailed, cite Exact matrix completion via convex optimization],
-$D$ can be recovered exactly. In the case of collaborative filtering, we may be given a matrix $D$ that is only
+conditions on the rank of $D$ and the number of samples, $D$ can be recovered exactly \cite{exactpaper}. 
+In the case of collaborative filtering, we may be given a matrix $D$ that is only
 approximately low-rank, i.e., it has many dimensions with small singular values. In this case, a good approximation
 is still possible. \\
 
@@ -89,7 +91,53 @@ $$A + E = D_{\Omega} \ \ \ E_{ij} = 0 \ \forall(i, j) \in \Omega$$
 
 Since $E$ may be nonzero only on the coordinates of missing values, its only purpose is to compensate for the values set in $A$ on these coordinates. As $D_{\Omega}$ is zero there, if $A_{ij} = x$, we must have $D_{ij} = -x$ to fulfill the constraint. \\
 
-Introducing $E$ makes it possible to solve this problem using the Augmented Lagrangian Method.
+\subsection{Algorithm}
+
+We use a simplified version of Algorithm 6 in \cite{almpaper}, ALM for matrix completion. We introduce the soft-thresholding operator used in \cite{almpaper}: \\
+
+$$\mathcal{S}_{\epsilon}[x] := sign(x) \cdot max(abs(x) - \epsilon, 0)$$
+
+It lets $x$ go by $\epsilon$ closer to zero. The operator can be used on a matrix by applying it element-wise.
+
+
+\begin{algorithm}
+\KwIn{Observation samples $D_{ij}$, $(i, j) \in \Omega$, of a matrix $D \in \mathbb{R}^{m \times n}$ }
+$Y = 0$; $E = 0$; $\mu > 0$; $iter = 0$ \\
+\ \\
+
+\While{$\frac{||D_{\Omega} - A - E||_F}{||D_{\Omega}||_F} > \epsilon_1$ AND $iter < maxIter$}{
+$(U, S, V) = svd(D_{\Omega} - E + \mu^{-1}Y)$; \\
+$A = U\mathcal{S}_{\mu^-1}[S]V^T$; \\
+$E_{\bar{\Omega}} = (-A + \mu^{-1}Y)_{\bar{\Omega}}$; \\
+$Y = Y + \mu(D_{\Omega} - A - E)$; \\
+$iter = iter + 1$;
+}
+\KwOut{$A$}
+\end{algorithm}
+
+We refer to Algorithm 6 of \cite{almpaper} for the detailed workings on the algorithm. The main difference is
+that we do not update $\mu$; in our testings, we found this to be unneccessary for good results, and chose
+the simpler version to work with.
+
+\subsection{Implementation details}
+
+We use MATLAB for the implementation of our algorithm, and do not use any extra software packages.
+For $svd$, we use the economy-size singular value decomposition provided by MATLAB. \\
+
+We set $\mu = ||D_{\Omega}||_2^{-1}$, which is used in \cite{almpaper} as starting value $\mu_0$ that later gets updated. \\
+
+Our convergence criterion $\epsilon_1$ and the maximum number of iterations $maxIter$ are both variables that may be adjusted
+to get a trade-off between runtime and accuracy. As shown in the result section, increasing $\epsilon_1$ and/or decreasing $maxIter$
+may result in a better runtime with only little loss in accuracy. We do not give an optimal choice for these values and refer to the Results section for trade-off considerations.
+
+
+\subsection{Data generation model}
+
+We used a model to generate artificial data simulating users that rate hotels on a scale from 0 to 100. [TODO details of hotel model]
+
+
+
+
 
 
 \section{Results}
