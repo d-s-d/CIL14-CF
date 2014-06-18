@@ -7,7 +7,8 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{algorithm2e}
-
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.10}
 
 \begin{document}
 \title{Evaluating the Augmented Lagrangian Method for matrix completion used for Collaborative Filtering}
@@ -16,6 +17,8 @@
   Sven Hammann, Stefan Dietiker, Jannick Griner\\
   Department of Computer Science, ETH Zurich, Switzerland
 }
+
+
 
 \maketitle
 
@@ -32,19 +35,18 @@ error, but has a longer runtime.
 
 \section{Introduction}
 Recommender systems are widely used in practice to find items, e.g. books, movies or music,
-that might be of interest to a user.  Collaborative filtering algorithms try to predict ratings of
-users on items they have not actually rated. They do so by relating the ratings of the user for other
-items to those of other users. \\
+that might be of interest to a user. This goal can be achieved through the application of collaborative filtering algorithms, which try to predict ratings of
+users on items they have not actually rated. They do so by building a model based on the known ratings of a user and ratings of other, similar users. \\
 
-In our model, we consider an $m \times n$ matrix that consists of the ratings of m users for n items,
-where many values are missing, denoted by a special value. The goal of the collaborative filtering
+In our model, we consider an $m \times n$ matrix consisting of the ratings of m users for n items,
+where many values are missing. The goal of the collaborative filtering
 algorithm is to predict the missing values as accurately as possible. Its performance is measured
 by comparing a full original data matrix with the matrix that was reconstructed by the algorithm,
-given a part of the original matrix with missing entries. \\
+given the original matrix with a fraction of entries missing. \\
 
-The main assumption of many collaborative filtering algorithms including the one used in this paper
+The main assumption of many collaborative filtering algorithms, including the ones used in this paper,
 is that the original matrix has low rank, or at least approximately low rank, i.e., many dimensions
-that have small singular values. The reason for this lies in the assumed correlations between ratings:
+only having small singular values. The reason for this lies in the assumed correlations between ratings:
 If two or more users have similar ratings on some items, it is likely that there is some underlying smaller
 dimension responsible for these ratings. These dimensions can be interpreted as topics of interest. \\
 
@@ -141,6 +143,60 @@ We used a model to generate artificial data simulating users that rate hotels on
 
 
 \section{Results}
+
+\begin{tikzpicture}
+\begin{axis}[
+	legend pos=north west,
+	title=Runtime Plot,
+	xlabel={Percentage of data considered},
+	ylabel={Runtime in $s$},
+	grid=major,
+	legend entries={$SVD$,$ALM$,$RPCA$},
+]
+\addplot table {data/runtime_svd.dat};
+\addplot table {data/runtime_alm.dat};
+\addplot table {data/runtime_rpca.dat};
+\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\begin{axis}[
+	legend pos=north west,
+	title=Sparsity Plot (with added attackers),
+	xlabel={Sparsity of Matrix},
+	ylabel={Mean error},
+	grid=major,
+	legend entries={$ALM$,$RPCA$,$SVD$},
+]
+\addplot [mark=square*,blue,solid] table {data/Sparse/ALM0.dat};
+\addplot [mark=square*,green,solid]	table {data/Sparse/RPCA0.dat};
+\addplot [mark=square*,red,solid] table {data/Sparse/SVD0.dat};
+\addplot [mark=o,blue,dotted] table {data/Sparse/ALM100.dat};
+\addplot [mark=o,blue,dotted] table {data/Sparse/ALM200.dat};
+\addplot [mark=o,blue,dotted] table {data/Sparse/ALM300.dat};
+\addplot [mark=o,green,dotted] table {data/Sparse/RPCA100.dat};
+\addplot [mark=o,green,dotted] table {data/Sparse/RPCA200.dat};
+\addplot [mark=o,green,dotted] table {data/Sparse/RPCA300.dat};
+\addplot [mark=o,red,dotted] table {data/Sparse/SVD100.dat};
+\addplot [mark=o,red,dotted] table {data/Sparse/SVD200.dat};
+\addplot [mark=o,red,dotted] table {data/Sparse/SVD300.dat};
+\end{axis}
+\end{tikzpicture}
+
+\begin{tikzpicture}
+\begin{axis}[
+	legend pos=outer north east,
+	title=User Group Plot,
+	xlabel={Number of user groups},
+	ylabel={Mean error},
+	grid=major,
+	legend entries={$ALM$,$RPCA$,$SVD$},
+]
+\addplot table {data/userGroup/ALM.dat};
+\addplot table {data/userGroup/RPCA.dat};
+\addplot table {data/userGroup/SVD.dat};
+\end{axis}
+\end{tikzpicture}
 
 
 \section{Discussion}

@@ -28,11 +28,10 @@ group_coupling = group_coupling + triu(group_coupling,1)';
 
 %generate full rankings based on user-group ranking and group coupling
 user_group_rating = rand(user,groups);
-for i=1:user
-    for t=2:groups
-       user_group_rating(:,t) = max(0,min(1,(mean(user_group_rating(:,1:(t-1)) + sign(rand(user,t-1)-0.5).*repmat((1-group_coupling(t,1:(t-1))),user,1).*(rand(user,t-1)./t),2))));
-    end
+for t=2:groups
+    user_group_rating(:,t) = max(0,min(1,(mean(user_group_rating(:,1:(t-1)) + sign(rand(user,t-1)-0.5).*repmat((1-group_coupling(t,1:(t-1))),user,1).*(rand(user,t-1)./t),2))));
 end
+
 for h=1:hotel
     for find_group=1:groups
         if ismember(h,g{find_group})
