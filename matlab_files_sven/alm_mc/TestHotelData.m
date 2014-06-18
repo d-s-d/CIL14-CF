@@ -18,7 +18,7 @@ for attackers=0:50:250
     predData_alm_clean = predData_alm(1:user,:);
 
     mse_alm = sqrt(mean((data(:) - predData_alm_clean(:)).^2));
-    fprintf(1,'ALM-Error with %d attackers: %d\n', attackers, mse_alm);
+    fprintf(1,'ALM-Error with %d attackers: %f\n', attackers, mse_alm);
 
     fprintf('RPCA running on Matrix of size %d x %d\n',size(modData,1),size(modData,2));
     [predData_rpca, noise_rpca] = rpca_missing(modData, nil);
@@ -33,5 +33,5 @@ for attackers=0:50:250
     predData_rpca_clean = predData_rpca(1:user,:);
 
     mse_rpca = sqrt(mean((data(:) - predData_rpca_clean(:)).^2));
-    fprintf(1,'RPCA-Error with %d attackers: %d\n', attackers, mse_rpca);
+    fprintf(1,'RPCA-Error with %d attackers: %f\n', attackers, mse_rpca);
 end
