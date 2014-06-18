@@ -1,0 +1,30 @@
+# .gitignore file for LaTeX projects
+# https://gist.github.com/kogakure/149016
+
+CIL_Paper/*.aux
+CIL_Paper/*.glo
+CIL_Paper/*.idx
+CIL_Paper/*.log
+CIL_Paper/*.toc
+CIL_Paper/*.ist
+CIL_Paper/*.acn
+CIL_Paper/*.acr
+CIL_Paper/*.alg
+CIL_Paper/*.bbl
+CIL_Paper/*.blg
+CIL_Paper/*.dvi
+CIL_Paper/*.glg
+CIL_Paper/*.gls
+CIL_Paper/*.ilg
+CIL_Paper/*.ind
+CIL_Paper/*.lof
+CIL_Paper/*.lot
+CIL_Paper/*.maf
+CIL_Paper/*.mtc
+CIL_Paper/*.mtc1
+CIL_Paper/*.out
+CIL_Paper/*.synctex.gz
+
+# We also ignore intermediate versions of the report.
+
+CIL_Paper/CIL_Paper.pdf
