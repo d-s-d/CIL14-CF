@@ -1,13 +1,13 @@
 % Test script for generated hotel data
-user = 999;
-hotel = 80;
-user_groups = 20;
-groups = 5;
+user = 500;
+hotel = 30;
+user_groups = 15;
+groups = 8;
 sparse = 0.5;
-attack_groups = [1 1]; %[Number of groups   Number of hotel in attacking groups]
+attack_groups = [1 3]; %[Number of groups   Number of hotel in attacking groups]
 nil = -1;
 t_elapsed = .0;
-attackers_amount = [0:300:600];
+attackers_amount = [0:1:0];
 %rand('seed', 42);
 
 [ data, modData, g, attacker_rows ] = generateRealData( user, hotel, user_groups, groups, attackers_amount(end) ,sparse, attack_groups );

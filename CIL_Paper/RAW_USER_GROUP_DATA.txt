@@ -1,0 +1,131 @@
+user = 999;hotel = 42;user_groups = 100;groups = 12;sparse = 0.5;attack_groups = [1 5];
+ALM-Error with 0 attackers: 0.154303 (runtime: 1.214763 sec.)
+RPCA-Error with 0 attackers: 0.689384 (runtime: 1.121575 sec.)
+SVD-Error with 0 attackers: 4.231747 (runtime: 0.083100 sec.)
+ALM-Error with 100 attackers: 0.244024 (runtime: 1.318285 sec.)
+RPCA-Error with 100 attackers: 0.777477 (runtime: 1.210851 sec.)
+SVD-Error with 100 attackers: 3.974489 (runtime: 0.078582 sec.)
+ALM-Error with 200 attackers: 0.290987 (runtime: 1.416360 sec.)
+RPCA-Error with 200 attackers: 0.868276 (runtime: 1.315790 sec.)
+SVD-Error with 200 attackers: 3.971995 (runtime: 0.086298 sec.)
+ALM-Error with 300 attackers: 0.326703 (runtime: 1.536672 sec.)
+RPCA-Error with 300 attackers: 0.971771 (runtime: 1.429387 sec.)
+SVD-Error with 300 attackers: 3.971391 (runtime: 0.084261 sec.)
+
+#Sparsity SEIRES:
+user = 999;hotel = 42;user_groups = 30;groups = 5;sparse = 0.8;attack_groups = [3 8];
+ALM-Error with 0 attackers: 0.397950 (runtime: 1.114644 sec.)
+RPCA-Error with 0 attackers: 23.891036 (runtime: 0.965579 sec.)
+SVD-Error with 0 attackers: 5.360674 (runtime: 0.074658 sec.)
+ALM-Error with 100 attackers: 0.797300 (runtime: 1.224135 sec.)
+RPCA-Error with 100 attackers: 25.054356 (runtime: 1.049540 sec.)
+SVD-Error with 100 attackers: 5.195112 (runtime: 0.087545 sec.)
+ALM-Error with 200 attackers: 0.945327 (runtime: 1.341321 sec.)
+RPCA-Error with 200 attackers: 26.033446 (runtime: 1.150978 sec.)
+SVD-Error with 200 attackers: 5.157006 (runtime: 0.084662 sec.)
+ALM-Error with 300 attackers: 1.117684 (runtime: 1.428460 sec.)
+RPCA-Error with 300 attackers: 26.871734 (runtime: 1.213506 sec.)
+SVD-Error with 300 attackers: 5.377479 (runtime: 0.094265 sec.)
+
+user = 999;hotel = 42;user_groups = 30;groups = 5;sparse = 0.7;attack_groups = [3 8];
+ALM-Error with 0 attackers: 0.193017 (runtime: 1.170709 sec.)
+RPCA-Error with 0 attackers: 7.820412 (runtime: 1.026640 sec.)
+SVD-Error with 0 attackers: 4.876713 (runtime: 0.093378 sec.)
+ALM-Error with 100 attackers: 0.408063 (runtime: 1.271894 sec.)
+RPCA-Error with 100 attackers: 9.678818 (runtime: 1.131084 sec.)
+SVD-Error with 100 attackers: 4.606128 (runtime: 0.079451 sec.)
+ALM-Error with 200 attackers: 0.516167 (runtime: 1.393958 sec.)
+RPCA-Error with 200 attackers: 11.387519 (runtime: 1.219720 sec.)
+SVD-Error with 200 attackers: 4.625712 (runtime: 0.079926 sec.)
+ALM-Error with 300 attackers: 0.604562 (runtime: 1.470886 sec.)
+RPCA-Error with 300 attackers: 12.950092 (runtime: 1.334999 sec.)
+SVD-Error with 300 attackers: 4.833728 (runtime: 0.084793 sec.)
+
+user = 999;hotel = 42;user_groups = 30;groups = 5;sparse = 0.6;attack_groups = [3 8];
+ALM-Error with 0 attackers: 0.127235 (runtime: 1.246601 sec.)
+RPCA-Error with 0 attackers: 1.434059 (runtime: 1.076612 sec.)
+SVD-Error with 0 attackers: 4.366756 (runtime: 0.082201 sec.)
+ALM-Error with 100 attackers: 0.275372 (runtime: 1.261735 sec.)
+RPCA-Error with 100 attackers: 1.670330 (runtime: 1.258564 sec.)
+SVD-Error with 100 attackers: 4.032905 (runtime: 0.071781 sec.)
+ALM-Error with 200 attackers: 0.343824 (runtime: 1.450402 sec.)
+RPCA-Error with 200 attackers: 1.950270 (runtime: 1.297183 sec.)
+SVD-Error with 200 attackers: 4.059860 (runtime: 0.081761 sec.)
+ALM-Error with 300 attackers: 0.398737 (runtime: 1.540626 sec.)
+RPCA-Error with 300 attackers: 2.271373 (runtime: 1.391595 sec.)
+SVD-Error with 300 attackers: 4.315315 (runtime: 0.085939 sec.)
+
+user = 999;hotel = 42;user_groups = 30;groups = 5;sparse = 0.5;attack_groups = [3 8];
+ALM-Error with 0 attackers: 0.103034 (runtime: 1.242210 sec.)
+RPCA-Error with 0 attackers: 0.676190 (runtime: 1.122240 sec.)
+SVD-Error with 0 attackers: 3.889208 (runtime: 0.086346 sec.)
+ALM-Error with 100 attackers: 0.220758 (runtime: 1.313916 sec.)
+RPCA-Error with 100 attackers: 0.772006 (runtime: 1.362202 sec.)
+SVD-Error with 100 attackers: 3.533322 (runtime: 0.078033 sec.)
+ALM-Error with 200 attackers: 0.276891 (runtime: 1.736347 sec.)
+RPCA-Error with 200 attackers: 0.873507 (runtime: 1.705384 sec.)
+SVD-Error with 200 attackers: 3.519101 (runtime: 0.082077 sec.)
+ALM-Error with 300 attackers: 0.317217 (runtime: 1.784731 sec.)
+RPCA-Error with 300 attackers: 0.983024 (runtime: 1.463747 sec.)
+SVD-Error with 300 attackers: 3.826320 (runtime: 0.091294 sec.)
+
+user = 999;hotel = 42;user_groups = 30;groups = 5;sparse = 0.4;attack_groups = [3 8];
+ALM-Error with 0 attackers: 0.082860 (runtime: 1.353581 sec.)
+RPCA-Error with 0 attackers: 0.421848 (runtime: 1.164479 sec.)
+SVD-Error with 0 attackers: 3.397532 (runtime: 0.079721 sec.)
+ALM-Error with 100 attackers: 0.177907 (runtime: 1.305002 sec.)
+RPCA-Error with 100 attackers: 0.460168 (runtime: 1.278750 sec.)
+SVD-Error with 100 attackers: 3.044080 (runtime: 0.083327 sec.)
+ALM-Error with 200 attackers: 0.223545 (runtime: 1.472243 sec.)
+RPCA-Error with 200 attackers: 0.500475 (runtime: 1.353136 sec.)
+SVD-Error with 200 attackers: 2.963381 (runtime: 0.076363 sec.)
+ALM-Error with 300 attackers: 0.256227 (runtime: 1.618752 sec.)
+RPCA-Error with 300 attackers: 0.552627 (runtime: 1.503405 sec.)
+SVD-Error with 300 attackers: 3.102077 (runtime: 0.099318 sec.)
+
+user = 999;hotel = 42;user_groups = 30;groups = 5;sparse = 0.3;attack_groups = [3 8];
+ALM-Error with 0 attackers: 0.067680 (runtime: 1.276745 sec.)
+RPCA-Error with 0 attackers: 0.344463 (runtime: 1.098327 sec.)
+SVD-Error with 0 attackers: 2.860942 (runtime: 0.078605 sec.)
+ALM-Error with 100 attackers: 0.142391 (runtime: 1.552839 sec.)
+RPCA-Error with 100 attackers: 0.351474 (runtime: 1.231202 sec.)
+SVD-Error with 100 attackers: 2.410431 (runtime: 0.077331 sec.)
+ALM-Error with 200 attackers: 0.179486 (runtime: 1.454439 sec.)
+RPCA-Error with 200 attackers: 0.362168 (runtime: 1.454572 sec.)
+SVD-Error with 200 attackers: 2.358071 (runtime: 0.099939 sec.)
+ALM-Error with 300 attackers: 0.203998 (runtime: 1.739259 sec.)
+RPCA-Error with 300 attackers: 0.377694 (runtime: 1.473478 sec.)
+SVD-Error with 300 attackers: 2.440609 (runtime: 0.093800 sec.)
+
+#USER GROUP SERIES:
+user = 999;hotel = 81;user_groups = VAR;groups = 8;sparse = 0.5;attack_groups = [1 0];
+10		3.542771e-02		alm
+10		3.815092e-01		rpca
+10		4.296736e+00		svd
+20		5.411892e-02		alm
+20		7.125646e-01		rpca
+20		3.902566e+00		svd
+30		5.641953e-02		alm
+30		3.630943e-01		rpca
+30		3.948817e+00		svd
+40		8.568550e-02		alm
+40		4.115368e-01		rpca
+40		4.212465e+00		svd
+50		9.610956e-02		alm
+50		4.091830e-01		rpca
+50		4.307609e+00		svd
+60		9.227729e-02		alm
+60		3.957906e-01		rpca
+60		4.338150e+00		svd
+70		1.079737e-01		alm
+70		4.137056e-01		rpca
+70		3.932188e+00		svd
+80		1.234427e-01		alm
+80		5.629397e-01		rpca
+80		4.418179e+00		svd
+90		1.261884e-01		alm
+90		5.481605e-01		rpca
+90		4.187172e+00		svd
+100		1.091933e-01		alm
+100		4.081572e-01		rpca
+100		4.562832e+00		svd
