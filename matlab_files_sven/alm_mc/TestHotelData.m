@@ -1,15 +1,18 @@
 % Test script for generated hotel data
 user = 999;
 hotel = 42;
-user_groups = 999;
-groups = 42;
+user_groups = 6;
+groups = 5;
 sparse = 0.5;
-attack_groups = [1 0]; %[Number of groups   Number of hotel in attacking groups]
+attack_groups = [1 3]; %[Number of groups   Number of hotel in attacking groups]
 nil = -1;
 t_elapsed = .0;
-attackers_amount = [0:1:0];
+attackers_amount = [0:100:500];
 
-attackers=1;
+rand('seed', 42);
+
+[ data, modData, g, attacker_rows ] = generateRealData( user, hotel, user_groups, groups, attackers_amount(end) ,sparse, attack_groups );
+
 %M = zeros(user,hotel);
 %user_means = zeros(user,1);
 %for i=1:user
@@ -17,13 +20,11 @@ attackers=1;
 %    M(i,M(i,:) == nil) = user_means(i);
 %end
 
-fprintf('Groups\t\talm\t\trpca\t\tsvd\n');
+fprintf('Attackers\t\talm\t\trpca\t\tsvd\n');
 
-%for user_groups=10:200:810
+for attackers=1:length(attackers_amount)
     %fprintf('%d user groups:\n',user_groups);
-    rand('seed', 42);
 
-    [ data, modData, g, attacker_rows ] = generateRealData( user, hotel, user_groups, groups, attackers_amount(end) ,sparse, attack_groups );
     %fprintf('Rank of data is %d\n', rank(data));
 %for sparse = 0.3:0.1:0.8
  %   modData = fullmodData;
@@ -67,9 +68,9 @@ fprintf('Groups\t\talm\t\trpca\t\tsvd\n');
 	t_elapsed = toc;
     predData_svd_clean = predData_svd(1:user,:);
     mse_svd = sqrt(mean((data(:) - predData_svd_clean(:)).^2));
-    fprintf(1,'%d\t\t%d\t\t%d\t\t%d\n',user_groups,mse_alm,mse_rpca,mse_svd);
+    fprintf(1,'%d\t\t%d\t\t%d\t\t%d\n',attackers_amount(attackers),mse_alm,mse_rpca,mse_svd);
     
     %mse_rand = sqrt(mean((data(:) - M(:)).^2));
     %fprintf(1,'%d\t\t%d\t\tmean\n',attackers_amount(attackers),mse_rand);
-%end
+end
 %end

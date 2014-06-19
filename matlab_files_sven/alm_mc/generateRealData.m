@@ -53,7 +53,7 @@ for h=1:hotel
             break;
         end
     end
-    data(:,h) = max(0,min(100,round(80*(user_group_rating(:,hotel_group)+sign(rand(user,1)-0.5).*rand(user,1)/20) + 20*repmat(hotel_quality(h),user,1))));
+    data(:,h) = max(0,min(100,round(60*(user_group_rating(:,hotel_group)+sign(rand(user,1)-0.5).*rand(user,1)/20) + 40*repmat(hotel_quality(h),user,1))));
     %data(:,h) = max(0,min(100,round(random('norm',100*rand,5+10*rand,user,1))));
 end
 

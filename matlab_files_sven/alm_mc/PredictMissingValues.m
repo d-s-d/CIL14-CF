@@ -4,6 +4,6 @@ function X_pred = PredictMissingValues(X, nil)
 
 % your collaborative filtering code here!
 
-X_pred = baseline_svd(X, nil);
+X_pred = rpca_missing(X, nil);
 
 

@@ -7,6 +7,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{algorithm2e}
+\usepackage{tabularx}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.10}
 
@@ -135,7 +136,7 @@ to get a trade-off between runtime and accuracy. As shown in the result section,
 may result in a better runtime with only little loss in accuracy. We do not give an optimal choice for these values and refer to the Results section for trade-off considerations.
 
 
-\subsection{Data generation model}
+\subsection{Data generation model}\label{subsec:datageneration}
 
 We created a model to generate artificial data simulating users that rate hotels on a scale from 0 to 100. The model comes up with data in several steps. First, users and hotels are randomly divided into groups. In the next step, a coupling matrix, representing the similarity between the hotel groups is introduced. Based on this group similarity matrix and some randomness, a matrix representing the rating of hotel groups by user groups is created. Now we have a representation of the assumed underlying model of the rating process. User-hotel ratings can now be generated based on their respective groups. Again some extra randomness is added to represent the users individuality. Additionally the found rating is biased towards an underlying global score of the hotel, representing it's "true" rating.\\
 Attacks are added after the proper rating matrix has been created. A certain number of randomly selected hotels "attack" the system. The attackers are split into groups. Attack rows are added with the following ratings $R(h)$ for hotels:
@@ -154,26 +155,50 @@ The attacker rows are added to the end of the data matrix.
 
 
 \section{Results}
+We tested our MC-ALM method against to other methods for matrix completion. The first one is based on the RPCA approach introduced in ~\cite{rpcapaper}. The minimization problem introduced in RPCA is solved using the alternating direction method of multipliers (ADMM) a variation of ALM. This approach was shown to work well for RPCA in ~\cite{rpcaalgo}. RPCA is varied as proposed in section 1.6 of ~\cite{rpcapaper} to handle matrix completion.\\
+The second method we evaluated against is based on simple single value decomposition. The missing values are first replaced by the average rating of the corresponding user and the resulting matrix is then decomposed. The matrix is then recovered using the six largest singular values. This number was determined empirically as optimal based on the given data.
 
+\paragraph{}
+We evaluated the methods on two different kind of data sets. The first data set consists of real data, containing 569'026 ratings from 7834 users for 100 items. This set was used to compare the runtime and the error of the different algortihms in \ref{tab:overview}. Additionally we used the data to illustrate the efficiency of the different methods, by running them on parts of the data set (figure \ref{fig:runtime}).\\
+Based on the user-hotel model introduced in ~\ref{subsec:datageneration} we constructed a series of extra data sets. A first matrix, consisting of 999 users and 42 hotels was created, based on 30 user groups and 5 hotel groups. By removing various amounts of values the influence of sparsity for the different methods was evaluated. Results are displayed in figure \ref{fig:sparse}. A similar matrix (999 users, 81 hotels in 8 groups with 50\% sparsity) was used to evaluate the influence of changing  numbers of user groups. This number influences the rank of the matrix. Results are presented in figure \ref{fig:usergroups}
+
+\begin{table}%
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+Method & Error & Runtime\\
+\hline
+MC-ALM & 4.2044 & 11.49594s\\
+RPCA & 4.5399 & 28.78280s\\
+SVD & 4.3549 & 1.069168s\\
+\hline
+\end{tabular}
+\caption{Measurements for the full first data set. Error presents the mean square error between the original matrix and the one recovered from 50\% of the data. Runtime was measured on a standard laptop.}
+\label{tab:overview}
+\end{table}
+
+\begin{figure}
 \begin{tikzpicture}
 \begin{axis}[
 	legend pos=north west,
-	title=Runtime Plot,
 	xlabel={Percentage of data considered},
 	ylabel={Runtime in $s$},
 	grid=major,
-	legend entries={$SVD$,$ALM$,$RPCA$},
+	legend entries={MC-ALM,RPCA,SVD},
 ]
-\addplot table {data/runtime_svd.dat};
-\addplot table {data/runtime_alm.dat};
-\addplot table {data/runtime_rpca.dat};
+\addplot [mark=square*,blue,solid] table {data/runtime_alm.dat};
+\addplot [mark=square*,green,solid] table {data/runtime_rpca.dat};
+\addplot [mark=square*,red,solid] table {data/runtime_svd.dat};
 \end{axis}
 \end{tikzpicture}
+\caption{Comparison of the runtime of different methods based on the first data set.}
+\label{fig:runtime}
+\end{figure}
 
+\begin{figure}
 \begin{tikzpicture}
 \begin{axis}[
 	legend pos=north west,
-	title=Sparsity Plot (with added attackers),
 	xlabel={Sparsity of Matrix},
 	ylabel={Mean error},
 	grid=major,
@@ -193,21 +218,29 @@ The attacker rows are added to the end of the data matrix.
 \addplot [mark=o,red,dotted] table[x=Sparse,y=svd] {data/Sparse/sparsity_300.dat};
 \end{axis}
 \end{tikzpicture}
+\caption{Mean square error of the different methods completing the matrix from different amounts of missing values. Higher sparsity indicates more missing values. The dotted lines represent the results under the presence of attackers.}
+\label{fig:sparse}
+\end{figure}
 
+\begin{figure}
 \begin{tikzpicture}
 \begin{axis}[
 	legend pos=outer north east,
-	title=User Group Plot,
 	xlabel={Number of user groups},
 	ylabel={Mean error},
 	grid=major,
 	legend entries={$ALM$,$RPCA$,$SVD$},
 ]
-\addplot table[x=groups,y=alm] {data/userGroup/realGroups.dat};
-\addplot table[x=groups,y=rpca] {data/userGroup/realGroups.dat};
-\addplot table[x=groups,y=svd] {data/userGroup/realGroups.dat};
+\addplot [mark=square*,blue,solid] table[x=groups,y=alm] {data/userGroup/realGroups.dat};
+\addplot [mark=square*,green,solid] table[x=groups,y=rpca] {data/userGroup/realGroups.dat};
+\addplot [mark=square*,red,solid] table[x=groups,y=svd] {data/userGroup/realGroups.dat};
 \end{axis}
 \end{tikzpicture}
+\caption{Plot showing the mean square error for different amount of user groups.}
+\label{fig:usergroups}
+\end{figure}
+
+
 
 
 \section{Discussion}
