@@ -83,6 +83,8 @@ In the case of collaborative filtering, we may be given a matrix $D$ that is onl
 approximately low-rank, i.e., it has many dimensions with small singular values. In this case, a good approximation
 is still possible. \\
 
+Let $A$ be our matrix with the objective to reconstruct the original $D$. We cannot use convex optimization to minimize $rank(A)$ directly, and we might not want to do this if $A$ has many small, but nonzero singular values. We instead minimize the nuclear norm of $A$, denoted by $||A||_*$, which is the sum of singular values of $A$. This provides a good approximation for minimizing $rank(A)$. This is proven with respect to Robust PCA in \cite{rpcapaper} and adapted for our setting in \cite{almpaper}. \\
+
 We want so solve the following problem: 
 $$ \underset{A}{\text{minimize }} ||A||_* \text{ subject to  } A_{ij} = D_{ij} \ \forall(i, j) \in \Omega$$
 
