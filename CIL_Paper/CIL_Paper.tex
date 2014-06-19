@@ -179,18 +179,18 @@ The attacker rows are added to the end of the data matrix.
 	grid=major,
 	legend entries={$ALM$,$RPCA$,$SVD$},
 ]
-\addplot [mark=square*,blue,solid] table {data/Sparse/ALM0.dat};
-\addplot [mark=square*,green,solid]	table {data/Sparse/RPCA0.dat};
-\addplot [mark=square*,red,solid] table {data/Sparse/SVD0.dat};
-\addplot [mark=o,blue,dotted] table {data/Sparse/ALM100.dat};
-\addplot [mark=o,blue,dotted] table {data/Sparse/ALM200.dat};
-\addplot [mark=o,blue,dotted] table {data/Sparse/ALM300.dat};
-\addplot [mark=o,green,dotted] table {data/Sparse/RPCA100.dat};
-\addplot [mark=o,green,dotted] table {data/Sparse/RPCA200.dat};
-\addplot [mark=o,green,dotted] table {data/Sparse/RPCA300.dat};
-\addplot [mark=o,red,dotted] table {data/Sparse/SVD100.dat};
-\addplot [mark=o,red,dotted] table {data/Sparse/SVD200.dat};
-\addplot [mark=o,red,dotted] table {data/Sparse/SVD300.dat};
+\addplot [mark=square*,blue,solid] table[x=Sparse,y=alm] {data/Sparse/sparsity_0.dat};
+\addplot [mark=square*,green,solid]	table[x=Sparse,y=rpca] {data/Sparse/sparsity_0.dat};
+\addplot [mark=square*,red,solid] table[x=Sparse,y=svd] {data/Sparse/sparsity_0.dat};
+\addplot [mark=o,blue,dotted] table[x=Sparse,y=alm] {data/Sparse/sparsity_100.dat};
+\addplot [mark=o,green,dotted] table[x=Sparse,y=rpca] {data/Sparse/sparsity_100.dat};
+\addplot [mark=o,red,dotted] table[x=Sparse,y=svd] {data/Sparse/sparsity_100.dat};
+\addplot [mark=o,blue,dotted] table[x=Sparse,y=alm] {data/Sparse/sparsity_200.dat};
+\addplot [mark=o,green,dotted] table[x=Sparse,y=rpca] {data/Sparse/sparsity_200.dat};
+\addplot [mark=o,red,dotted] table[x=Sparse,y=svd] {data/Sparse/sparsity_200.dat};
+\addplot [mark=o,blue,dotted] table[x=Sparse,y=alm] {data/Sparse/sparsity_300.dat};
+\addplot [mark=o,green,dotted] table[x=Sparse,y=rpca] {data/Sparse/sparsity_300.dat};
+\addplot [mark=o,red,dotted] table[x=Sparse,y=svd] {data/Sparse/sparsity_300.dat};
 \end{axis}
 \end{tikzpicture}
 
@@ -203,9 +203,9 @@ The attacker rows are added to the end of the data matrix.
 	grid=major,
 	legend entries={$ALM$,$RPCA$,$SVD$},
 ]
-\addplot table {data/userGroup/ALM.dat};
-\addplot table {data/userGroup/RPCA.dat};
-\addplot table {data/userGroup/SVD.dat};
+\addplot table[x=groups,y=alm] {data/userGroup/realGroups.dat};
+\addplot table[x=groups,y=rpca] {data/userGroup/realGroups.dat};
+\addplot table[x=groups,y=svd] {data/userGroup/realGroups.dat};
 \end{axis}
 \end{tikzpicture}
 

@@ -37,7 +37,7 @@ group_coupling = group_coupling + triu(group_coupling,1)';
 %generate full rankings based on user-group ranking and group coupling
 user_hotel_group_rating = rand(no_user_groups,groups);
 for t=2:groups
-    user_hotel_group_rating(:,t) = max(0,min(1,(mean(user_hotel_group_rating(:,1:(t-1)) + sign(rand(no_user_groups,t-1)-0.5).*repmat((1-group_coupling(t,1:(t-1))),no_user_groups,1).*(rand(no_user_groups,t-1)),2))));
+    user_hotel_group_rating(:,t) = max(0,min(1,(mean(user_hotel_group_rating(:,1:(t-1)) + sign(rand(no_user_groups,t-1)-0.5).*repmat((1-group_coupling(t,1:(t-1))),no_user_groups,1).*(rand(no_user_groups,t-1))./1,2))));
     %user_hotel_group_rating(:,t) = max(0,min(1,(mean(user_hotel_group_rating(:,1:(t-1)) + sign(rand(no_user_groups,t-1)-0.5).*repmat((1-group_coupling(t,1:(t-1))),no_user_groups,1),2) + sign(rand-.5)*rand/3 )));
 end
 
@@ -53,7 +53,7 @@ for h=1:hotel
             break;
         end
     end
-    data(:,h) = max(0,min(100,round(80*(user_group_rating(:,hotel_group)+sign(rand-0.5)*rand/10) + 20*repmat(hotel_quality(h),user,1))));
+    data(:,h) = max(0,min(100,round(80*(user_group_rating(:,hotel_group)+sign(rand(user,1)-0.5).*rand(user,1)/20) + 20*repmat(hotel_quality(h),user,1))));
     %data(:,h) = max(0,min(100,round(random('norm',100*rand,5+10*rand,user,1))));
 end
 
@@ -67,7 +67,7 @@ if (attackers > 0)
         attacking_group = ceil(attack_groups(1)*rand);
         for b=1:hotel
             if ismember(b,bad_groups{attacking_group})
-                value = min(100,round(random('norm',98,2)));
+                value = min(100,round(random('norm',980,2)));
             else
                 value = max(0,round(random('norm',2,2)));
             end
