@@ -11,7 +11,7 @@
 \pgfplotsset{compat=1.10}
 
 \begin{document}
-\title{Evaluating the Augmented Lagrangian Method for matrix completion used for Collaborative Filtering}
+\title{Collaborative Filtering using the Augmented Lagrangian Method for matrix completion}
 
 \author{
   Sven Hammann, Stefan Dietiker, Jannick Griner\\
@@ -23,44 +23,36 @@
 \maketitle
 
 \begin{abstract}
-We evaluate the performance of a collaborative filtering algorithm that uses the
+We evaluate the performance of a collaborative filtering algorithm called ALM-MC that uses the
 Augmented Lagrangian Method (ALM) to minimize the nuclear norm of the reconstructed matrix.
-We present a slightly simpler version of this algorithm and show that is still performs
-well on different data sets, including data that contains corrupted data from malicious attackers.
-In particular, we show that the algorithm performs better than robust principal component analysis
-on these data sets, which is specifically used to filter out corrupted entries. We also compare the
-ALM algorithm to a baseline SVD algorithm and show that it performs better in terms of mean squared
-error, but has a longer runtime.
+We present a slightly simpler version of this algorithm and show that it performs better than the baseline
+SVD and RPCA algorithms in terms of mean squared error, but has a longer runtime than SVD. We present our own 
+model for generating artificial data that can be used to test collaborative filtering algorithms.
 \end{abstract}
 
 \section{Introduction}
-Recommender systems are widely used in practice to find items, e.g. books, movies or music,
-that might be of interest to a user. This goal can be achieved through the application of collaborative filtering algorithms, which try to predict ratings of
-users on items they have not actually rated. They do so by building a model based on the known ratings of a user and ratings of other, similar users. \\
+Almost all online shops nowadays employ some form of a recommender system to predict consumer references based on collected data on consumer behaviour and product ratings. The enormous amount of data require high-performance algorithms that can deal with data of large dimension. The problem of predicting the unknown ratings is called collaborative filtering, and the search for better algorithms in this field is a prominent problem, as can be seen in the Netflix prize challenge (netflixprize.com), where a million dollars were offered for the best such algorithm. \\
 
-In our model, we consider an $m \times n$ matrix consisting of the ratings of m users for n items,
-where many values are missing. The goal of the collaborative filtering
-algorithm is to predict the missing values as accurately as possible. Its performance is measured
-by comparing a full original data matrix with the matrix that was reconstructed by the algorithm,
-given the original matrix with a fraction of entries missing. \\
+In our model, we consider an $m \times n$ matrix consisting of the ratings of $m$ users for $n$ items,
+where many values are missing. The goal of collaborative filtering is to predict the missing values as accurately as possible. 
+When we want to measure the performance of a collaborative filtering algorithm, we remove some amount of entries from a given, full data matrix $D$, then have the algorithm reconstruct the missing entries as accurately as possible. We finally compare the reconstructed matrix $A$ with the original matrix $D$. \\
 
-The main assumption of many collaborative filtering algorithms, including the ones used in this paper,
-is that the original matrix has low rank, or at least approximately low rank, i.e., many dimensions
-only having small singular values. The reason for this lies in the assumed correlations between ratings:
+The underlying assumption of most collaborative filtering algorithms, including ALM-MC that is used in this paper,
+is that the original matrix $D$ has low rank, or at least approximately low rank, i.e., many dimensions have small singular values. 
+The reason for this lies in the assumed correlations between ratings:
 If two or more users have similar ratings on some items, it is likely that there is some underlying smaller
 dimension responsible for these ratings. These dimensions can be interpreted as topics of interest. \\
 
-A natural procedure is now to find a solution that respects the known entries, i.e., the reconstruction is equal 
+A natural procedure is now to find a solution $A$ that respects the known entries of $D$, i.e., the reconstruction is equal 
 to the original on the entries that are known, and that has minimal rank. A good approximation for minimization
 of the rank is minimizing the nuclear norm, i.e., the sum of singular values. This can be solved by convex optimization. 
-The algorithm we use was presented in \cite{almpaper} and uses the Augmented Lagrangian Method (ALM). \\
+The algorithm we use was presented in \cite{almpaper} and uses the Augmented Lagrangian Method (ALM). We call it ALM-MC short for Augmented Lagrangian Method for matrix completion. \\
 
 An additional consideration is that of corrupted entries in the original data matrix. These values are not missing,
-but they may not reflect a true rating of a user. An important real-world example are shilling attacks, where companies
-upvote their own products and downgrade the products of competitors. In a scenario where such attacks are expected, it
-is advisable to use a different method that takes care of these corruptions. We compare the algorithm using ALM with another algorithm that performs Robust Principal Component Analysis (RPCA), as introduced in \cite{rpcapaper}, and can deal with corrupted entries. \\
+but they may not reflect a true rating of a user. An important real-world example are shilling attacks, where manufacturers
+give good ratings to their own products and bad ratings to the products of competitors. \\
 
-We compare the algorithm using ALM from \cite{almpaper} to an algorithm using RPCA (as in \cite{rpcapaper}) and to another baseline algorithm using one Singular Value Decomposition. We present our own model to generate artificial test data that simulates users rating hotels that belong to different groups, and attackers that may want to benefit one group and hurt the others. We test our algorithms on our own artificial data as well as on a different data set. We then choose the ALM algorithm based on its performance on these data sets.
+We compare the algorithm using ALM from \cite{almpaper} to an algorithm using RPCA (as in \cite{rpcapaper}) and to another baseline algorithm using one Singular Value Decomposition. We present our own model to generate artificial test data that simulates users rating hotels that belong to different groups, and attackers that may want to benefit one group and hurt the others. We test our algorithms on our own artificial data as well as on a different data set.
 
 \section{Models and Methods}
 
@@ -86,22 +78,23 @@ is still possible. \\
 Let $A$ be our matrix with the objective to reconstruct the original $D$. We cannot use convex optimization to minimize $rank(A)$ directly, and we might not want to do this if $A$ has many small, but nonzero singular values. We instead minimize the nuclear norm of $A$, denoted by $||A||_*$, which is the sum of singular values of $A$. This provides a good approximation for minimizing $rank(A)$. This is proven with respect to Robust PCA in \cite{rpcapaper} and adapted for our setting in \cite{almpaper}. \\
 
 We want so solve the following problem: 
-$$ \underset{A}{\text{minimize }} ||A||_* \text{ subject to  } A_{ij} = D_{ij} \ \forall(i, j) \in \Omega$$
+$$ \underset{A}{\text{minimize }} ||A||_* \text{ subject to  }$$
+$$A_{ij} = D_{ij} \ \forall(i, j) \in \Omega$$
 
 Let $D_{\Omega}$ be the matrix such that $(D_{\Omega})_{ij} = D_{ij} \ \forall(i, j) \in \Omega$, and $(D_{\Omega})_{ij} = 0 \ \forall(i, j) \notin \Omega$. That is, the missing values are set to zero. We can then rewrite the constraint by introducing an auxiliary variable matrix $E$:
 
 $$ \underset{A}{\text{minimize }} ||A||_* \text{ subject to  }$$ 
 $$A + E = D_{\Omega} \ \ \ E_{ij} = 0 \ \forall(i, j) \in \Omega$$
 
-Since $E$ may be nonzero only on the coordinates of missing values, its only purpose is to compensate for the values set in $A$ on these coordinates. As $D_{\Omega}$ is zero there, if $A_{ij} = x$, we must have $D_{ij} = -x$ to fulfill the constraint. \\
+Since $E$ may be nonzero only on the coordinates of missing values, its only purpose is to compensate for the values set in $A$ on these coordinates. As $D_{\Omega}$ is zero there, if $A_{ij} = x$, we must have $E_{ij} = -x$ to fulfill the constraint. \\
 
 \subsection{Algorithm}
 
-We use a simplified version of Algorithm 6 in \cite{almpaper}, ALM for matrix completion. We introduce the soft-thresholding operator used in \cite{almpaper}: \\
+We use a simplified version of Algorithm 6 in \cite{almpaper}, ALM for matrix completion. We call this algorithm ALM-MC. We introduce the soft-thresholding operator used in \cite{almpaper}: \\
 
 $$\mathcal{S}_{\epsilon}[x] := sign(x) \cdot max(abs(x) - \epsilon, 0)$$
 
-It lets $x$ go by $\epsilon$ closer to zero. The operator can be used on a matrix by applying it element-wise.
+It lets $x$ go by $\epsilon$ closer to zero. The operator can be used on a matrix by applying it element-wise. 
 
 
 \begin{algorithm}
@@ -119,9 +112,10 @@ $iter = iter + 1$;
 \KwOut{$A$}
 \end{algorithm}
 
-We refer to Algorithm 6 of \cite{almpaper} for the detailed workings on the algorithm. The main difference is
-that we do not update $\mu$; in our testings, we found this to be unneccessary for good results, and chose
-the simpler version to work with.
+We use $E_{\bar{\Omega}}$ to denote that we only update $E_{ij}$ for $(i, j) \notin \Omega$, e.g., only the values that are missing from $D$. \\
+
+We refer to Algorithm 6 of \cite{almpaper} for the detailed workings on the algorithm, in particular for the augmented Lagrange function that is minimized by applying soft-thresholding to the singular values of $A$. The main difference of our version to the one in \cite{almpaper} is
+that we do not update $\mu$; in our testings, we found this to be unneccessary for good results, and chose the simpler version to work with.
 
 \subsection{Implementation details}
 
@@ -130,9 +124,7 @@ For $svd$, we use the economy-size singular value decomposition provided by MATL
 
 We set $\mu = ||D_{\Omega}||_2^{-1}$, which is used in \cite{almpaper} as starting value $\mu_0$ that later gets updated. \\
 
-Our convergence criterion $\epsilon_1$ and the maximum number of iterations $maxIter$ are both variables that may be adjusted
-to get a trade-off between runtime and accuracy. As shown in the result section, increasing $\epsilon_1$ and/or decreasing $maxIter$
-may result in a better runtime with only little loss in accuracy. We do not give an optimal choice for these values and refer to the Results section for trade-off considerations.
+Our convergence criterion $\epsilon_1$ is set to $10^{-7}$ and the maximum number of iterations $maxIter$ is set to 150. We found these values to give a good trade-off between runtime and accuracy, but encourage to experiment with these values: In some applications, a slightly higher error might be acceptable, so increasing $\epsilon_1$ or decreasing $maxIter$ to achieve better runtime may be advisable.
 
 
 \subsection{Data generation model}
