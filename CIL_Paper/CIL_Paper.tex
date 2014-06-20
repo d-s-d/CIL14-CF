@@ -130,7 +130,7 @@ Our convergence criterion $\epsilon_1$ is set to $10^{-7}$ and the maximum numbe
 
 \subsection{Data generation model}\label{subsec:datageneration}
 
-We created a model to generate artificial data simulating users that rate hotels on a scale from 0 to 100. The model comes up with data in several steps. First, users and hotels are randomly divided into groups. In the next step, a coupling matrix, representing the similarity between the hotel groups is introduced. Based on this group similarity matrix and some randomness, a matrix representing the rating of hotel groups by user groups is created. Now we have a representation of the assumed underlying model of the rating process. User-hotel ratings can now be generated based on their respective groups. Again some extra randomness is added to represent the users individuality. Additionally the found rating is biased towards an underlying global score of the hotel, representing it's "true" rating.\\
+We created a model to generate artificial data simulating users that rate hotels on a scale from 0 to 100. The model comes up with data in several steps. First, users and hotels are randomly divided into groups. In the next step, a coupling matrix, representing the similarity between the hotel groups is introduced. Based on this group similarity matrix and some randomness, a matrix representing the rating of hotel groups by user groups is created. Now we have a representation of the assumed underlying model of the rating process. User-hotel ratings can now be generated based on their respective groups. Again some extra randomness is added to represent the users individuality. Additionally the found rating is biased towards an underlying global score of the hotel, representing its "true" rating.\\
 Attacks are added after the proper rating matrix has been created. A certain number of randomly selected hotels "attack" the system. The attackers are split into groups. Attack rows are added with the following ratings $R(h)$ for hotels:
 \begin{equation*}
 R(h) =
@@ -167,7 +167,7 @@ RPCA & 4.5399 & 28.78280s\\
 SVD & 4.3549 & 1.069168s\\
 \hline
 \end{tabular}
-\caption{Measurements for the full first data set. Error presents the mean square error between the original matrix and the one recovered from 50\% of the data. Runtime was measured on a standard laptop.}
+\caption{Measurements for the full fixed data set. Error presents the mean square error between the original matrix and the one recovered from 50\% of the data. Runtime was measured on a standard laptop.}
 \label{tab:overview}
 \end{table}
 
