@@ -32,11 +32,11 @@ model for generating artificial data that can be used to test collaborative filt
 \end{abstract}
 
 \section{Introduction}
-Almost all online shops nowadays employ some form of a recommender system to predict consumer references based on collected data on consumer behavior and product ratings. The enormous amount of data require high-performance algorithms that can deal with data of large dimension. The problem of predicting the unknown ratings is called collaborative filtering, and the search for better algorithms in this field is a prominent problem, as can be seen in the Netflix prize challenge (netflixprize.com), where a million dollars were offered for the best such algorithm. \\
+Almost all online shops nowadays employ some form of a recommender system to predict consumer preferences based on collected data on consumer behavior and product ratings. The enormous amount of data require high-performance algorithms capable of dealing with high-dimensional data. The problem of predicting the unknown ratings is called collaborative filtering, and the search for better algorithms in this field is a prominent problem, as can be seen in the Netflix prize challenge (netflixprize.com), where a million dollars were offered for the best such algorithm. \\
 
 In our model, we consider an $m \times n$ matrix consisting of the ratings of $m$ users for $n$ items,
 where many values are missing. The goal of collaborative filtering is to predict the missing values as accurately as possible. 
-When we want to measure the performance of a collaborative filtering algorithm, we remove some amount of entries from a given, full data matrix $D$, then have the algorithm reconstruct the missing entries as accurately as possible. We finally compare the reconstructed matrix $A$ with the original matrix $D$. \\
+When we want to measure the performance of a collaborative filtering algorithm, we remove some entries from a given, full data matrix $D$, then have the algorithm reconstruct the missing entries as accurately as possible. We finally compare the reconstructed matrix $A$ with the original matrix $D$. \\
 
 The underlying assumption of most collaborative filtering algorithms, including MC-ALM that is used in this paper,
 is that the original matrix $D$ has low rank, or at least approximately low rank, i.e., many dimensions have small singular values. 
@@ -116,7 +116,7 @@ $iter = iter + 1$;
 We use $E_{\bar{\Omega}}$ to denote that we only update $E_{ij}$ for $(i, j) \notin \Omega$, e.g., only the values that are missing from $D$. \\
 
 We refer to Algorithm 6 of \cite{almpaper} for the detailed workings on the algorithm, in particular for the augmented Lagrange function that is minimized by applying soft-thresholding to the singular values of $A$. The main difference of our version to the one in \cite{almpaper} is
-that we do not update $\mu$; in our testings, we found this to be unneccessary for good results, and chose the simpler version to work with.
+that we do not update $\mu$; in our testings, we found this to be unnecessary for good results, and chose the simpler version to work with.
 
 \subsection{Implementation details}
 
@@ -152,7 +152,11 @@ The second method we evaluated against is based on simple single value decomposi
 
 \paragraph{}
 We evaluated the methods on two different kind of data sets. The first data set consists of real data, containing 569'026 ratings from 7834 users for 100 items. This set was used to compare the runtime and the error of the different algorithms in \ref{tab:overview}. Additionally we used the data to illustrate the efficiency of the different methods, by running them on a percentage of all matrix rows (figure \ref{fig:runtime}).\\
+<<<<<<< HEAD
 Based on the user-hotel model introduced in ~\ref{subsec:datageneration} we constructed a series of extra data sets. A first matrix, consisting of 999 users and 42 hotels was created, based on 30 user groups and 5 hotel groups. By removing various amounts of values the influence of sparsity for the different methods was evaluated. Results are displayed in figure \ref{fig:sparse}. A similar matrix (999 users, 81 hotels in 8 groups with 50\% sparsity) was used to evaluate the influence of changing numbers of user groups. This number influences the rank of the matrix. Results are presented in figure \ref{fig:usergroups}.
+=======
+Based on the user-hotel model introduced in ~\ref{subsec:datageneration} we constructed a series of extra data sets. A first matrix, consisting of 999 users and 42 hotels was created, based on 30 user groups and 5 hotel groups. By removing various amounts of values the influence of sparsity for the different methods was evaluated. Results are displayed in figure \ref{fig:sparse}. A similar matrix (999 users, 81 hotels in 8 groups with 50\% sparsity) was used to evaluate the influence of changing  numbers of user groups. This number influences the rank of the matrix. Results are presented in figure \ref{fig:usergroups}
+>>>>>>> c80ee135dae604e505272a21705f8b60d17ac764
 
 \begin{table}%
 \centering
@@ -235,6 +239,12 @@ SVD & 4.3549 & 1.069168s\\
 
 
 \section{Discussion}
+<<<<<<< HEAD
+=======
+All three methods grow linearly in the number of rows in the matrix. This seems somewhat surprising, as the for all methods required single value decomposition's runtime grows like $\mathcal{O}(m^2)$. The transition to a linear behavior is achieved through the use of optimized versions of $svd$ in MATLAB to only retrieve the single values needed. The different slopes of growth are due to the needed iterations in MC-ALM and RPCA and the more complex update steps in RPCA.\\
+Our MC-ALM method outperforms SVD in terms of mean square error on both data sets. The implemented method for RPCA performs worst on the first data set.\\
+The observation of RPCA failing with increasing sparsity of the matrix, coincides with the conditions given in \cite{rpcapaper}. As the input matrix has less and less values it becomes low-rank and sparse. This makes it difficult to decide whether it is low-rank or sparse.\\
+>>>>>>> c80ee135dae604e505272a21705f8b60d17ac764
 
 \subsection{Runtime}
 The runtime of all three methods grows linearly in the number of rows in the matrix, as seen in Figure \ref{fig:runtime}. This seems somewhat surprising, as for all methods, single value decomposition is required which grows like $\mathcal{O}(m^2)$. The transition to a linear behavior is achieved through the use of optimized versions of $svd$ in MATLAB using economy-size decomposition to only retrieve the singular values needed. The different slopes of growth are due to the iterations needed in MC-ALM and RPCA and the more complex update steps in RPCA.
