@@ -75,15 +75,10 @@ if (attackers > 0)
         end
     end
     %Add attacks to data
-    modData((end+1):(end+attackers),:) = fake_data;
-        
-    %Mix attackers into regular users
-    %permutation = randperm(size(modData,1));
-    %attacker_rows = find(permutation > user);
-    %modData = modData(permutation,:);
+    modData((end+1):(end+attackers),:) = fake_data;       
 end
 
-%Remove some vlaues according to sparse
+%Remove some values according to sparse
 if (sparse > 0 && sparse < 1)
     idx = randperm(numel(data));
     corrVal = round(sparse * numel(data));
