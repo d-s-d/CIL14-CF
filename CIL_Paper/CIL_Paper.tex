@@ -152,11 +152,9 @@ The second method we evaluated against is based on simple single value decomposi
 
 \paragraph{}
 We evaluated the methods on two different kind of data sets. The first data set consists of real data, containing 569'026 ratings from 7834 users for 100 items. This set was used to compare the runtime and the error of the different algorithms in \ref{tab:overview}. Additionally we used the data to illustrate the efficiency of the different methods, by running them on a percentage of all matrix rows (figure \ref{fig:runtime}).\\
-<<<<<<< HEAD
+
 Based on the user-hotel model introduced in ~\ref{subsec:datageneration} we constructed a series of extra data sets. A first matrix, consisting of 999 users and 42 hotels was created, based on 30 user groups and 5 hotel groups. By removing various amounts of values the influence of sparsity for the different methods was evaluated. Results are displayed in figure \ref{fig:sparse}. A similar matrix (999 users, 81 hotels in 8 groups with 50\% sparsity) was used to evaluate the influence of changing numbers of user groups. This number influences the rank of the matrix. Results are presented in figure \ref{fig:usergroups}.
-=======
-Based on the user-hotel model introduced in ~\ref{subsec:datageneration} we constructed a series of extra data sets. A first matrix, consisting of 999 users and 42 hotels was created, based on 30 user groups and 5 hotel groups. By removing various amounts of values the influence of sparsity for the different methods was evaluated. Results are displayed in figure \ref{fig:sparse}. A similar matrix (999 users, 81 hotels in 8 groups with 50\% sparsity) was used to evaluate the influence of changing  numbers of user groups. This number influences the rank of the matrix. Results are presented in figure \ref{fig:usergroups}
->>>>>>> c80ee135dae604e505272a21705f8b60d17ac764
+
 
 \begin{table}%
 \centering
@@ -239,12 +237,6 @@ SVD & 4.3549 & 1.069168s\\
 
 
 \section{Discussion}
-<<<<<<< HEAD
-=======
-All three methods grow linearly in the number of rows in the matrix. This seems somewhat surprising, as the for all methods required single value decomposition's runtime grows like $\mathcal{O}(m^2)$. The transition to a linear behavior is achieved through the use of optimized versions of $svd$ in MATLAB to only retrieve the single values needed. The different slopes of growth are due to the needed iterations in MC-ALM and RPCA and the more complex update steps in RPCA.\\
-Our MC-ALM method outperforms SVD in terms of mean square error on both data sets. The implemented method for RPCA performs worst on the first data set.\\
-The observation of RPCA failing with increasing sparsity of the matrix, coincides with the conditions given in \cite{rpcapaper}. As the input matrix has less and less values it becomes low-rank and sparse. This makes it difficult to decide whether it is low-rank or sparse.\\
->>>>>>> c80ee135dae604e505272a21705f8b60d17ac764
 
 \subsection{Runtime}
 The runtime of all three methods grows linearly in the number of rows in the matrix, as seen in Figure \ref{fig:runtime}. This seems somewhat surprising, as for all methods, single value decomposition is required which grows like $\mathcal{O}(m^2)$. The transition to a linear behavior is achieved through the use of optimized versions of $svd$ in MATLAB using economy-size decomposition to only retrieve the singular values needed. The different slopes of growth are due to the iterations needed in MC-ALM and RPCA and the more complex update steps in RPCA.
