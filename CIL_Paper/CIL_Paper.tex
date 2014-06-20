@@ -244,8 +244,7 @@ matrix, as seen in Figure \ref{fig:runtime}. This seems somewhat surprising, as
 for all methods, single value decomposition is being used the runtime of which,
 in general, is a function in $\mathcal{O}(m^2)$, where $m$ is the number of
 rows. However, the transition to a linear behavior is achieved through the use
-of an optimized version of $svd$ provided by MATLAB (indicate version being
-used) using economy-size decomposition to only retrieve the singular values
+of an optimized version of $svd$ provided by MATLAB R2013b using economy-size decomposition to only retrieve the singular values
 needed. The different slopes of growth are due to the iterations needed in
 MC-ALM and RPCA and the more complex update steps in RPCA.
 
