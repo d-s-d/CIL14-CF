@@ -113,7 +113,7 @@ $iter = iter + 1$;
 \KwOut{$A$}
 \end{algorithm}
 
-We use $E_{\bar{\Omega}}$ to denote that we only update $E_{ij}$ for $(i, j) \notin \Omega$, e.g., only the values that are missing from $D$. \\
+We use $E_{\bar{\Omega}}$ to denote that we only update $E_{ij}$ for $(i, j) \notin \Omega$, i.e., only the values that are missing from $D$. \\
 
 We refer to Algorithm 6 of \cite{almpaper} for the detailed workings on the algorithm, in particular for the augmented Lagrange function that is minimized by applying soft-thresholding to the singular values of $A$. The main difference of our version to the one in \cite{almpaper} is
 that we do not update $\mu$; in our testings, we found this to be unnecessary for good results, and chose the simpler version to work with.
@@ -184,7 +184,7 @@ SVD & 4.3549 & 1.069168s\\
 \addplot [mark=square*,red,solid] table {data/runtime_svd.dat};
 \end{axis}
 \end{tikzpicture}
-\caption{Comparison of the runtime of different methods based on the first data set.}
+\caption{Comparison of the runtime of different methods based on the fixed data set.}
 \label{fig:runtime}
 \end{figure}
 
