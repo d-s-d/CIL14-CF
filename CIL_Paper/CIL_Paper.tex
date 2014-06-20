@@ -32,7 +32,7 @@ model for generating artificial data that can be used to test collaborative filt
 \end{abstract}
 
 \section{Introduction}
-Almost all online shops nowadays employ some form of a recommender system to predict consumer references based on collected data on consumer behaviour and product ratings. The enormous amount of data require high-performance algorithms that can deal with data of large dimension. The problem of predicting the unknown ratings is called collaborative filtering, and the search for better algorithms in this field is a prominent problem, as can be seen in the Netflix prize challenge (netflixprize.com), where a million dollars were offered for the best such algorithm. \\
+Almost all online shops nowadays employ some form of a recommender system to predict consumer references based on collected data on consumer behavior and product ratings. The enormous amount of data require high-performance algorithms that can deal with data of large dimension. The problem of predicting the unknown ratings is called collaborative filtering, and the search for better algorithms in this field is a prominent problem, as can be seen in the Netflix prize challenge (netflixprize.com), where a million dollars were offered for the best such algorithm. \\
 
 In our model, we consider an $m \times n$ matrix consisting of the ratings of $m$ users for $n$ items,
 where many values are missing. The goal of collaborative filtering is to predict the missing values as accurately as possible. 
@@ -151,7 +151,7 @@ We tested our MC-ALM method against to other methods for matrix completion. The 
 The second method we evaluated against is based on simple single value decomposition. The missing values are first replaced by the average rating of the corresponding user and the resulting matrix is then decomposed. The matrix is then recovered using the six largest singular values. This number was determined empirically as optimal based on the given data.
 
 \paragraph{}
-We evaluated the methods on two different kind of data sets. The first data set consists of real data, containing 569'026 ratings from 7834 users for 100 items. This set was used to compare the runtime and the error of the different algortihms in \ref{tab:overview}. Additionally we used the data to illustrate the efficiency of the different methods, by running them on parts of the data set (figure \ref{fig:runtime}).\\
+We evaluated the methods on two different kind of data sets. The first data set consists of real data, containing 569'026 ratings from 7834 users for 100 items. This set was used to compare the runtime and the error of the different algortihms in \ref{tab:overview}. Additionally we used the data to illustrate the efficiency of the different methods, by running them on a percentage of all matrix rows (figure \ref{fig:runtime}).\\
 Based on the user-hotel model introduced in ~\ref{subsec:datageneration} we constructed a series of extra data sets. A first matrix, consisting of 999 users and 42 hotels was created, based on 30 user groups and 5 hotel groups. By removing various amounts of values the influence of sparsity for the different methods was evaluated. Results are displayed in figure \ref{fig:sparse}. A similar matrix (999 users, 81 hotels in 8 groups with 50\% sparsity) was used to evaluate the influence of changing  numbers of user groups. This number influences the rank of the matrix. Results are presented in figure \ref{fig:usergroups}
 
 \begin{table}%
@@ -194,7 +194,7 @@ SVD & 4.3549 & 1.069168s\\
 	xlabel={Sparsity of Matrix},
 	ylabel={Mean error},
 	grid=major,
-	legend entries={$ALM$,$RPCA$,$SVD$},
+	legend entries={MC-ALM,RPCA,SVD},
 ]
 \addplot [mark=square*,blue,solid] table[x=Sparse,y=alm] {data/Sparse/sparsity_0.dat};
 \addplot [mark=square*,green,solid]	table[x=Sparse,y=rpca] {data/Sparse/sparsity_0.dat};
@@ -217,11 +217,12 @@ SVD & 4.3549 & 1.069168s\\
 \begin{figure}
 \begin{tikzpicture}
 \begin{axis}[
-	legend pos=outer north east,
+	legend style={at={(0.5,1.03)},anchor=south},
+	legend columns=3,
 	xlabel={Number of user groups},
 	ylabel={Mean error},
 	grid=major,
-	legend entries={$ALM$,$RPCA$,$SVD$},
+	legend entries={MC-ALM,RPCA,SVD},
 ]
 \addplot [mark=square*,blue,solid] table[x=groups,y=alm] {data/userGroup/realGroups.dat};
 \addplot [mark=square*,green,solid] table[x=groups,y=rpca] {data/userGroup/realGroups.dat};
@@ -233,14 +234,14 @@ SVD & 4.3549 & 1.069168s\\
 \end{figure}
 
 
-
-
 \section{Discussion}
-
-
+All three methods grow linearly in the number of rows in the matrix. This seems somewhat surprising, as the for all methods required single value decomposition's runtime grows like $\mathcal{O}(m^2)$. The transition to a linear behavior is achieved through the use of optimized versions of $svd$ in MATLAB to only retrieve the single values needed. The different slopes of growth are due to the needed itterations in MC-ALM and RPCA and the more complex update steps in RPCA.\\
+Our MC-ALM method outperforms SVD in terms of mean square error on both data sets. The implemented method for RPCA performs worst on the first data set.\\
+The observation of RPCA failing with increasing sparsity of the matrix, coincides with the conditions given in \cite{rpcapaper}. As the input matrix has less and less values it becomes low-rank and sparse. This makes it difficult to decide whether it is low-rank or sparse.\\
 
 \section{Summary}
-
+...
+We tried several set ups including multiple attackers. Unfortunately no significant impact on the mean error could be measured. This could either indicate that all methods offer a good resistance to shilling attacks, or, more likely, our model does not provide realistic attacks. In any case, further research in this direction is needed.
 
 \bibliographystyle{IEEEtran}
 \bibliography{CIL_Paper}
