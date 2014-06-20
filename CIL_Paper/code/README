@@ -1,4 +1,37 @@
 README for Collaborative_Ciltering Submission
+authors:
+Sven Hammann
+Stefan Dietiker
+Jannick Griner
+
+Department of Computer Science, ETH Zurich
+
+File overview:
+alm_mc.m
+method for completing a matrix based on the mc-alm method
+parameters:
+M - Matrix to be completed
+nil - value representing the missing values in M
+output:
+L - The completed matrix
+
+baseline_rpca
+method for completing a matrix based on the rpca method
+parameters:
+M - Matrix to be completed
+nil - value representing the missing values in M
+output:
+L - The low-rank part of the completed matrix
+S - The sparse part of the completed matrix
+
+baseline_svd
+method for completing a matrix based on the svd method
+parameters:
+M - Matrix to be completed
+nil - value representing the missing values in M
+output:
+L - The completed matrix
+
 
 generateHotelData.m
 Creates the data described in section II-E of the paper.
@@ -13,3 +46,6 @@ attack_groups - Vector [x y]
 	x number of attacking groups
 	y number of hotels involved in attacks
 	constrained: x <= y <= hotel
+output:
+data - The complete user-hotel rating matrix
+modData - The user-hotel rating matrix with added attacker rows and removed values (represented by -1)
