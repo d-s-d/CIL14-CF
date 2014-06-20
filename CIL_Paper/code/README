@@ -1,0 +1,15 @@
+README for Collaborative_Ciltering Submission
+
+generateHotelData.m
+Creates the data described in section II-E of the paper.
+Parameters for the function:
+user - number of users (rows)
+hotel - number of hotels/items (columns)
+user_groups - number of groups for users
+groups - number of groups for hotels/items
+attackers - number of attackers
+sparse - sparsity of returned modified matrix (higher value -> less entries)
+attack_groups - Vector [x y]
+	x number of attacking groups
+	y number of hotels involved in attacks
+	constrained: x <= y <= hotel
