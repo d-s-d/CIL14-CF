@@ -24,7 +24,7 @@
 \maketitle
 
 \begin{abstract}
-We evaluate the performance of a collaborative filtering algorithm called ALM-MC that uses the
+We evaluate the performance of a collaborative filtering algorithm called MC-ALM that uses the
 Augmented Lagrangian Method (ALM) to minimize the nuclear norm of the reconstructed matrix.
 We present a slightly simpler version of this algorithm and show that it performs better than the baseline
 SVD and RPCA algorithms in terms of mean squared error, but has a longer runtime than SVD. We present our own 
@@ -38,7 +38,7 @@ In our model, we consider an $m \times n$ matrix consisting of the ratings of $m
 where many values are missing. The goal of collaborative filtering is to predict the missing values as accurately as possible. 
 When we want to measure the performance of a collaborative filtering algorithm, we remove some amount of entries from a given, full data matrix $D$, then have the algorithm reconstruct the missing entries as accurately as possible. We finally compare the reconstructed matrix $A$ with the original matrix $D$. \\
 
-The underlying assumption of most collaborative filtering algorithms, including ALM-MC that is used in this paper,
+The underlying assumption of most collaborative filtering algorithms, including MC-ALM that is used in this paper,
 is that the original matrix $D$ has low rank, or at least approximately low rank, i.e., many dimensions have small singular values. 
 The reason for this lies in the assumed correlations between ratings:
 If two or more users have similar ratings on some items, it is likely that there is some underlying smaller
@@ -47,7 +47,7 @@ dimension responsible for these ratings. These dimensions can be interpreted as 
 A natural procedure is now to find a solution $A$ that respects the known entries of $D$, i.e., the reconstruction is equal 
 to the original on the entries that are known, and that has minimal rank. A good approximation for minimization
 of the rank is minimizing the nuclear norm, i.e., the sum of singular values. This can be solved by convex optimization. 
-The algorithm we use was presented in \cite{almpaper} and uses the Augmented Lagrangian Method (ALM). We call it ALM-MC short for Augmented Lagrangian Method for matrix completion. \\
+The algorithm we use was presented in \cite{almpaper} and uses the Augmented Lagrangian Method (ALM). We call it MC-ALM short for Augmented Lagrangian Method for matrix completion. \\
 
 An additional consideration is that of corrupted entries in the original data matrix. These values are not missing,
 but they may not reflect a true rating of a user. An important real-world example are shilling attacks, where manufacturers
@@ -91,7 +91,7 @@ Since $E$ may be nonzero only on the coordinates of missing values, its only pur
 
 \subsection{Algorithm}
 
-We use a simplified version of Algorithm 6 in \cite{almpaper}, ALM for matrix completion. We call this algorithm ALM-MC. We introduce the soft-thresholding operator used in \cite{almpaper}: \\
+We use a simplified version of Algorithm 6 in \cite{almpaper}, ALM for matrix completion. We call this algorithm MC-ALM. We introduce the soft-thresholding operator used in \cite{almpaper}: \\
 
 $$\mathcal{S}_{\epsilon}[x] := sign(x) \cdot max(abs(x) - \epsilon, 0)$$
 
@@ -147,12 +147,12 @@ The attacker rows are added to the end of the data matrix.
 
 
 \section{Results}
-We tested our MC-ALM method against to other methods for matrix completion. The first one is based on the RPCA approach introduced in ~\cite{rpcapaper}. The minimization problem introduced in RPCA is solved using the alternating direction method of multipliers (ADMM) a variation of ALM. This approach was shown to work well for RPCA in ~\cite{rpcaalgo}. RPCA is varied as proposed in section 1.6 of ~\cite{rpcapaper} to handle matrix completion.\\
+We tested our MC-ALM method against two other methods for matrix completion. The first one is based on the RPCA approach introduced in ~\cite{rpcapaper}. The minimization problem introduced in RPCA is solved using the alternating direction method of multipliers (ADMM), a variation of ALM. This approach was shown to work well for RPCA in ~\cite{rpcaalgo}. RPCA is modified as proposed in section 1.6 of ~\cite{rpcapaper} to handle matrix completion.\\
 The second method we evaluated against is based on simple single value decomposition. The missing values are first replaced by the average rating of the corresponding user and the resulting matrix is then decomposed. The matrix is then recovered using the six largest singular values. This number was determined empirically as optimal based on the given data.
 
 \paragraph{}
-We evaluated the methods on two different kind of data sets. The first data set consists of real data, containing 569'026 ratings from 7834 users for 100 items. This set was used to compare the runtime and the error of the different algortihms in \ref{tab:overview}. Additionally we used the data to illustrate the efficiency of the different methods, by running them on a percentage of all matrix rows (figure \ref{fig:runtime}).\\
-Based on the user-hotel model introduced in ~\ref{subsec:datageneration} we constructed a series of extra data sets. A first matrix, consisting of 999 users and 42 hotels was created, based on 30 user groups and 5 hotel groups. By removing various amounts of values the influence of sparsity for the different methods was evaluated. Results are displayed in figure \ref{fig:sparse}. A similar matrix (999 users, 81 hotels in 8 groups with 50\% sparsity) was used to evaluate the influence of changing  numbers of user groups. This number influences the rank of the matrix. Results are presented in figure \ref{fig:usergroups}
+We evaluated the methods on two different kind of data sets. The first data set consists of real data, containing 569'026 ratings from 7834 users for 100 items. This set was used to compare the runtime and the error of the different algorithms in \ref{tab:overview}. Additionally we used the data to illustrate the efficiency of the different methods, by running them on a percentage of all matrix rows (figure \ref{fig:runtime}).\\
+Based on the user-hotel model introduced in ~\ref{subsec:datageneration} we constructed a series of extra data sets. A first matrix, consisting of 999 users and 42 hotels was created, based on 30 user groups and 5 hotel groups. By removing various amounts of values the influence of sparsity for the different methods was evaluated. Results are displayed in figure \ref{fig:sparse}. A similar matrix (999 users, 81 hotels in 8 groups with 50\% sparsity) was used to evaluate the influence of changing numbers of user groups. This number influences the rank of the matrix. Results are presented in figure \ref{fig:usergroups}.
 
 \begin{table}%
 \centering
@@ -210,7 +210,7 @@ SVD & 4.3549 & 1.069168s\\
 \addplot [mark=o,red,dotted] table[x=Sparse,y=svd] {data/Sparse/sparsity_300.dat};
 \end{axis}
 \end{tikzpicture}
-\caption{Mean square error of the different methods completing the matrix from different amounts of missing values. Higher sparsity indicates more missing values. The dotted lines represent the results under the presence of attackers.}
+\caption{Mean square error for completing the matrix from a different amounts of missing values. Higher sparsity indicates more missing values. The dotted lines represent the results under the presence of attackers. The data was generated by our user-hotel model.}
 \label{fig:sparse}
 \end{figure}
 
@@ -229,22 +229,27 @@ SVD & 4.3549 & 1.069168s\\
 \addplot [mark=square*,red,solid] table[x=groups,y=svd] {data/userGroup/realGroups.dat};
 \end{axis}
 \end{tikzpicture}
-\caption{Plot showing the mean square error for different amount of user groups.}
+\caption{Mean square error for data sets from our user-hotel model with a different amount of user groups.}
 \label{fig:usergroups}
 \end{figure}
 
 
 \section{Discussion}
-All three methods grow linearly in the number of rows in the matrix. This seems somewhat surprising, as the for all methods required single value decomposition's runtime grows like $\mathcal{O}(m^2)$. The transition to a linear behavior is achieved through the use of optimized versions of $svd$ in MATLAB to only retrieve the single values needed. The different slopes of growth are due to the needed itterations in MC-ALM and RPCA and the more complex update steps in RPCA.\\
-Our MC-ALM method outperforms SVD in terms of mean square error on both data sets. The implemented method for RPCA performs worst on the first data set.\\
-The observation of RPCA failing with increasing sparsity of the matrix, coincides with the conditions given in \cite{rpcapaper}. As the input matrix has less and less values it becomes low-rank and sparse. This makes it difficult to decide whether it is low-rank or sparse.\\
 
-We tried several set ups including multiple attackers. Unfortunately no significant impact on the mean error could be measured. This could either indicate that all methods offer a good resistance to shilling attacks, or, more likely, our model does not provide realistic attacks. In any case, further research in this direction is needed.
+\subsection{Runtime}
+The runtime of all three methods grows linearly in the number of rows in the matrix, as seen in Figure \ref{fig:runtime}. This seems somewhat surprising, as for all methods, single value decomposition is required which grows like $\mathcal{O}(m^2)$. The transition to a linear behavior is achieved through the use of optimized versions of $svd$ in MATLAB using economy-size decomposition to only retrieve the singular values needed. The different slopes of growth are due to the iterations needed in MC-ALM and RPCA and the more complex update steps in RPCA.
+
+\subsection{Mean squared error}
+Our MC-ALM method outperforms SVD in terms of mean squared error on both the first data set, as seen in table \ref{tab:overview}, and the data sets generated by our user-hotel model, as seen in figures \ref{fig:sparse} and \ref{fig:usergroups}. The implemented method for RPCA performs worst on the first data set. The lower error of MC-ALM compared to SVD provides a good reason to choose MC-ALM over SVD if the increase in runtime can be tolerated. \\
+
+We observe in figure \ref{fig:sparse} that RPCA fails with increasing sparsity of the matrix. This coincides with the conditions given in \cite{rpcapaper}. As the input matrix has less and less values it becomes both low-rank and sparse. This makes it difficult to decompose it into a low-rank and a sparse component. \\
+
+We tried several set ups with data generated by our user-hotel model that includes attackers. Unfortunately no significant impact on the mean squared error could be measured. This could either indicate that all methods offer a good resistance to shilling attacks, or, more likely, that our model does not provide realistic attacks. In any case, further research in this direction is needed.
 
 \section{Summary}
-We presented and evaluated a simplified version of the ALM-MC algorithm from \cite{almpaper}. We showed that it performs better than the baseline algorithms RPCA and SVD in terms of mean squared error, but has a longer runtime than SVD. We presented a model to generate data including shilling attacks. We used this data to measure performance on matrix with different sparsity and showed that the baseline RPCA algorithm breaks down when the matrix is too sparse, but ALM-MC does not. \\
+We presented and evaluated a simplified version of the MC-ALM algorithm from \cite{almpaper}. We showed that it performs better than the baseline algorithms RPCA and SVD in terms of mean squared error, but has a longer runtime than SVD. We presented a model to generate data including shilling attacks. We used this data to measure performance on matrix with different sparsity and showed that the baseline RPCA algorithm breaks down when the matrix is too sparse, but MC-ALM does not. \\
 
-We also measured how well the different algorithms perform on data from our model containing shilling attacks, but did not find a significant increase in mean square error on any of the algorithms. We conclude that our model needs further work in order to provide a realistic simulation of shilling attacks. The question whether ALM-MC is a useful algorithm for collaborative filtering even under the presence of shilling attacks could not be answered conclusively. We believe that this is an interesting area for further research and that our model can hopefully provide a good starting point.
+We also measured how well the different algorithms perform on data from our model containing shilling attacks, but did not find a significant increase in mean square error on any of the algorithms. We conclude that our model needs further work in order to provide a realistic simulation of shilling attacks. The question whether MC-ALM is a useful algorithm for collaborative filtering even under the presence of shilling attacks could not be answered conclusively. We believe that this is an interesting area for further research and that our model can hopefully provide a good starting point.
 
 
 \bibliographystyle{IEEEtran}
